@@ -1,7 +1,11 @@
-# 동탄즐거운교회 웹 주보 (초안)
+# 동탄즐거운교회 웹 주보
+
+### 👉 https://vulkanuslee-afk.github.io/dongtan-rejoice-bulletin/
 
 종이 주보를 그대로 휴대폰으로 옮긴 **웹 주보**입니다.
 **2026년 11월 8일 45호** 주보 내용이 실제로 들어가 있습니다.
+
+저장소: https://github.com/vulkanuslee-afk/dongtan-rejoice-bulletin
 
 앱스토어 설치·심사가 없고, 카톡 링크 하나로 열립니다. 홈 화면에 추가하면 앱처럼 보입니다.
 
