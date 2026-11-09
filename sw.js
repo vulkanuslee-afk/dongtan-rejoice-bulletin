@@ -1,6 +1,9 @@
-/* 서비스워커 — 껍데기만 캐시하고, 주보 데이터는 항상 새로 받아옵니다.
-   (주보가 바뀌었는데 옛 내용이 보이는 사고를 막기 위한 설계입니다) */
-var SHELL = 'bulletin-shell-v2';
+/* 서비스워커
+   원칙: "주보는 늘 최신이 보여야 한다"
+   - 앱 화면(index.html)과 주보 내용(data/)은 항상 새것을 먼저 받아옵니다.
+   - 인터넷이 끊겼을 때만 저장해 둔 것을 보여 줍니다.
+   - 로고·사진처럼 안 바뀌는 것만 저장본을 먼저 씁니다. */
+var SHELL = 'bulletin-shell-v3';
 var SHELL_FILES = ['./', './index.html', './manifest.webmanifest',
   './assets/logo.png', './assets/hero.jpg', './assets/icon-192.png'];
 
@@ -19,24 +22,43 @@ self.addEventListener('activate', function (e) {
   self.clients.claim();
 });
 
+function networkFirst(req) {
+  return fetch(req).then(function (res) {
+    if (res && res.ok) {
+      var copy = res.clone();
+      caches.open(SHELL).then(function (c) { c.put(req, copy); });
+    }
+    return res;
+  }).catch(function () {
+    return caches.match(req).then(function (hit) {
+      return hit || caches.match('./index.html');
+    });
+  });
+}
+
+function cacheFirst(req) {
+  return caches.match(req).then(function (hit) {
+    return hit || fetch(req).then(function (res) {
+      if (res && res.ok) {
+        var copy = res.clone();
+        caches.open(SHELL).then(function (c) { c.put(req, copy); });
+      }
+      return res;
+    });
+  });
+}
+
 self.addEventListener('fetch', function (e) {
-  var url = new URL(e.request.url);
+  var req = e.request;
+  if (req.method !== 'GET') return;
+
+  var url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+
+  var isDoc = req.mode === 'navigate' ||
+              url.pathname.endsWith('/') ||
+              url.pathname.endsWith('.html');
   var isData = url.pathname.indexOf('/data/') !== -1;
 
-  if (isData) {
-    // 주보 데이터: 네트워크 우선, 끊겼을 때만 캐시
-    e.respondWith(
-      fetch(e.request).then(function (res) {
-        var copy = res.clone();
-        caches.open(SHELL).then(function (c) { c.put(e.request, copy); });
-        return res;
-      }).catch(function () { return caches.match(e.request); })
-    );
-    return;
-  }
-
-  // 나머지: 캐시 우선
-  e.respondWith(
-    caches.match(e.request).then(function (hit) { return hit || fetch(e.request); })
-  );
+  e.respondWith((isDoc || isData) ? networkFirst(req) : cacheFirst(req));
 });
