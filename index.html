@@ -104,6 +104,12 @@ img{max-width:100%}
 .quote{font-size:15px; line-height:1.82; background:var(--soft); border-radius:14px; padding:14px 15px; margin:0}
 .verse{font-size:16.5px; line-height:1.9; letter-spacing:-.01em; margin:0}
 .verseref{font-size:13px; font-weight:800; color:var(--brand); margin:0 0 7px; letter-spacing:.02em}
+.bverse{font-size:16px; line-height:1.9; margin:0 0 9px; letter-spacing:-.01em}
+.bverse .bn{display:inline-block; min-width:20px; font-size:12px; font-weight:800;
+  color:var(--brand2); vertical-align:2px; margin-right:3px}
+.tag{display:inline-block; font-size:11px; font-weight:700; background:var(--soft2); color:var(--muted);
+  border-radius:999px; padding:2px 9px; margin-left:6px; vertical-align:middle}
+.loading{font-size:14px; color:var(--muted); padding:8px 0}
 
 /* ===== 버튼 ===== */
 .btns{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
@@ -344,6 +350,7 @@ textarea{min-height:92px; resize:vertical}
 <div class="mask" id="mask"><div class="sheet" id="sheet"></div></div>
 <div class="toast" id="toast"></div>
 
+<script src="data/bible/_index.js"></script>
 <script src="data/hymns.js"></script>
 <script src="data/bulletins.js"></script>
 <script>
@@ -651,15 +658,91 @@ textarea{min-height:92px; resize:vertical}
       '<div class="btns"><a class="btn pri" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query='+q+'">유튜브에서 듣기</a></div>'+
       '<p class="warn">가사 전문은 넣지 않았습니다. 새찬송가 가사는 한국찬송가공회 저작물이라 웹 게시에는 사용 허락이 필요합니다.</p>');
   }
+  /* ---- 성경 본문 ---- */
+  var BIBLE={}, BIBLE_CB={}, BIBLE_ING={};
+  window.BIBLE_PUT=function(b){
+    BIBLE[b.abbrev]=b;
+    (BIBLE_CB[b.abbrev]||[]).forEach(function(f){ f(); });
+    BIBLE_CB[b.abbrev]=[];
+  };
+  function loadBook(ab, cb){
+    if(BIBLE[ab]) return cb(null);
+    (BIBLE_CB[ab]=BIBLE_CB[ab]||[]).push(function(){ cb(null); });
+    if(BIBLE_ING[ab]) return;
+    BIBLE_ING[ab]=1;
+    var s=document.createElement('script');
+    s.src='data/bible/'+ab+'.js';
+    s.onerror=function(){ BIBLE_ING[ab]=0; cb('load'); };
+    document.head.appendChild(s);
+  }
+  /* "골로새서 3:15-17", "요한복음 3:16", "시편 23", "골로새서 3:15-4:1" */
+  function parseRef(ref){
+    var m=String(ref||'').trim()
+      .match(/^(.+?)\s*(\d+)\s*(?::\s*(\d+))?\s*(?:[-~–]\s*(?:(\d+)\s*:\s*)?(\d+))?\s*$/);
+    if(!m) return null;
+    var idx=window.BIBLE_INDEX||{};
+    var name=m[1].replace(/\s+/g,'');
+    var ab=idx[name];
+    if(!ab) return null;
+    var c1=+m[2], v1=m[3]?+m[3]:null;
+    var c2=m[4]?+m[4]:c1, v2=m[5]?+m[5]:null;
+    return {ab:ab, name:name, c1:c1, v1:v1, c2:c2, v2:v2};
+  }
+  function passageHtml(p){
+    var bk=BIBLE[p.ab], out=[], plain=[];
+    if(!bk) return null;
+    function push(c, vi, t){
+      out.push('<p class="bverse"><span class="bn">'+(p.c1!==p.c2?c+':':'')+vi+'</span>'+esc(t)+'</p>');
+      plain.push(vi+' '+t);
+    }
+    for(var c=p.c1; c<=p.c2; c++){
+      var ch=bk.ch[c-1]; if(!ch) continue;
+      var from=(c===p.c1 && p.v1)?p.v1:1;
+      var to=(c===p.c2 && (p.v2||p.v1))?(p.v2||p.v1):ch.length;
+      if(!p.v1) { from=1; to=ch.length; }
+      for(var v=from; v<=to && v<=ch.length; v++) push(c, v, ch[v-1]);
+    }
+    return out.length?{html:out.join(''), text:plain.join('\n')}:null;
+  }
   function openBible(ref){
     var q=encodeURIComponent(ref+' 개역개정');
-    sheet('성경 본문',
-      '<p class="bigtext">'+esc(ref)+'</p>'+
-      '<div class="btns">'+
-        '<a class="btn pri" target="_blank" rel="noopener" href="https://www.bskorea.or.kr/bible/korbibReadpage.php">대한성서공회</a>'+
-        '<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/search?q='+q+'">본문 검색</a>'+
-        '<button class="btn" data-act="copy" data-v="'+esc(ref)+'">장절 복사</button>'+
-      '</div>');
+    var links='<div class="btns">'+
+        '<a class="btn" target="_blank" rel="noopener" href="https://www.bskorea.or.kr/bible/korbibReadpage.php">대한성서공회</a>'+
+        '<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/search?q='+q+'">다른 번역 보기</a>'+
+      '</div>';
+
+    /* 주보에 직접 넣은 본문이 있으면 그게 우선 */
+    var own=(D.passages||{})[ref];
+    if(own){
+      sheet(esc(ref),
+        '<p class="verseref">'+esc(ref)+'<span class="tag">주보 본문</span></p>'+
+        '<p class="verse">'+esc(own).replace(/\n/g,'<br />')+'</p>'+
+        '<div class="btns"><button class="btn pri" data-act="copy" data-v="'+esc(own)+'">본문 복사</button></div>'+links);
+      return;
+    }
+
+    var p=parseRef(ref);
+    if(!p){
+      sheet('성경 본문', '<p class="bigtext">'+esc(ref)+'</p>'+
+        '<p class="warn">본문을 찾지 못했습니다. 책 이름과 장·절 표기를 확인해 주세요. (예: 골로새서 3:15-17)</p>'+links);
+      return;
+    }
+
+    sheet(esc(ref), '<p class="loading">본문을 불러오는 중…</p>');
+    loadBook(p.ab, function(err){
+      if($('#mask').classList.contains('on')===false) return;
+      var r=err?null:passageHtml(p);
+      if(!r){
+        sheet(esc(ref), '<p class="bigtext">'+esc(ref)+'</p>'+
+          '<p class="warn">본문을 불러오지 못했습니다.</p>'+links);
+        return;
+      }
+      sheet(esc(ref),
+        '<p class="verseref">'+esc(ref)+'<span class="tag">개역한글</span></p>'+
+        r.html+
+        '<div class="btns"><button class="btn pri" data-act="copy" data-v="'+esc(ref+'\n'+r.text)+'">본문 복사</button></div>'+
+        links);
+    });
   }
 
   document.addEventListener('click', function(e){
