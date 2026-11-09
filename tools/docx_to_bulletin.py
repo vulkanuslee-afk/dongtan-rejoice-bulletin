@@ -196,6 +196,23 @@ def parse(lines):
             notices.append({'body': s.lstrip('*※·• ').strip()})
     out['notices'] = notices
 
+    # ---- 지난주 헌금 명단 ----
+    # '지난주 헌금 명단' 다음 줄들에서 한글 이름만 골라냅니다.
+    offering = []
+    ostart = None
+    for i, f in enumerate(flat):
+        if '헌금명단' in f or '지난주헌금' in f:
+            ostart = i + 1
+            break
+    if ostart is not None:
+        for ln in lines[ostart:ostart + 6]:
+            if '온라인' in ln or re.search(r'\d{3}[- ]\d{3,4}', ln) or '예금주' in ln:
+                break
+            for tok in re.split(r'[\s,·]+', ln.strip()):
+                if re.fullmatch(r'[가-힣]{2,4}', tok):
+                    offering.append(tok)
+    out['offeringNames'] = offering
+
     # ---- 일정 (소식 중 날짜가 들어간 것) ----
     cal = []
     datepat = re.compile(r'(\d{1,2})\s*월\s*(\d{1,2})\s*일\s*(?:\(\s*(주일|[월화수목금토일])\s*\))?')
@@ -257,7 +274,7 @@ def js(value, indent):
 
 def block(data):
     keys = ['date', 'issue', 'label', 'theme', 'sermon', 'order',
-            'memoPrompt', 'challenge', 'notices', 'calendar']
+            'memoPrompt', 'challenge', 'notices', 'calendar', 'offeringNames']
     lines = ['    {']
     for k in keys:
         lines.append('      %s: %s,' % (k, js(data[k], 6)))
@@ -283,6 +300,8 @@ def main():
     print('예배순서:', len(data['order']), '줄')
     print('소식   :', len(data['notices']), '건')
     print('일정   :', len(data['calendar']), '건')
+    print('헌금명단:', len(data['offeringNames']), '명',
+          ('— 이름은 꼭 눈으로 확인해 주세요' if data['offeringNames'] else ''))
 
     missing = [k for k in ('theme',) if data[k] == TODO]
     for k, v in data['sermon'].items():

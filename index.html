@@ -163,6 +163,9 @@ textarea{min-height:92px; resize:vertical}
 .acct{border:1px solid var(--line); border-radius:14px; padding:13px; background:var(--soft2)}
 .acct .lb{font-size:13px; color:var(--muted)}
 .acct .no{font-size:18px; font-weight:800; margin:2px 0 6px; word-break:break-all; color:var(--brand)}
+.names{display:flex; flex-wrap:wrap; gap:7px; margin-top:4px}
+.name{background:var(--soft2); border:1px solid var(--line); border-radius:999px;
+  padding:7px 14px; font-size:16px; font-weight:700}
 
 /* ===== 탭바 ===== */
 .tabbar{position:fixed; left:0; right:0; bottom:0; z-index:40;
@@ -326,6 +329,11 @@ textarea{min-height:92px; resize:vertical}
       <p class="sub">계좌번호를 누르면 복사됩니다.</p>
       <div id="sAccts"></div>
       <p class="warn" id="sAcctNote"></p>
+    </div>
+    <div class="card" id="sOfferingCard">
+      <h2>지난주 헌금 명단</h2>
+      <p class="sub">감사함으로 드린 분들입니다.</p>
+      <div class="names" id="sNames"></div>
     </div>
     <div class="card" id="sMinistryCard">
       <img class="photo" src="assets/ph-hands.jpg" alt="" />
@@ -525,6 +533,14 @@ textarea{min-height:92px; resize:vertical}
         '<div class="btns"><button class="btn pri" data-act="copy" data-v="'+esc(full)+'">계좌 복사</button></div></div>';
     }).join('');
     $('#sAcctNote').textContent=c.accountNote||'';
+
+    var names=b.offeringNames||[];
+    if(names.length){
+      $('#sOfferingCard').style.display='';
+      $('#sNames').innerHTML=names.map(function(n){
+        return '<span class="name">'+esc(n)+'</span>';
+      }).join('');
+    } else { $('#sOfferingCard').style.display='none'; }
 
     var mn=c.ministry;
     if(mn){

@@ -1,0 +1,33 @@
+# 주보 앱을 GitHub Pages 로 올립니다.
+# 예전 방식(Jekyll)이 이유 없이 실패해서, 폴더를 그대로 올리는 방식으로 바꿨습니다.
+# main 에 올릴 때마다 자동으로 배포됩니다. 실패하면 저장소 Actions 탭에 이유가 남습니다.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
