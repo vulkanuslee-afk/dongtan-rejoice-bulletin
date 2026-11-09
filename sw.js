@@ -30,7 +30,8 @@ function networkFirst(req) {
     }
     return res;
   }).catch(function () {
-    return caches.match(req).then(function (hit) {
+    // 오프라인: ?v=... 가 달라도 저장해 둔 같은 파일을 찾아 줍니다
+    return caches.match(req, { ignoreSearch: true }).then(function (hit) {
       return hit || caches.match('./index.html');
     });
   });

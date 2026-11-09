@@ -133,7 +133,8 @@ gh api -X POST repos/vulkanuslee-afk/dongtan-rejoice-bulletin/pages -f "source[b
 git add -A && git commit -m "11월 15일 46호" && git push
 ```
 
-고친 내용이 바로 안 보이면 주소 뒤에 `?v=2`, `?v=3` 을 붙여 공유하면 확실합니다.
+주보 내용은 **열 때마다 새로 받아오도록** 되어 있어서, 올리면 바로 바뀝니다.
+(`?v=` 를 붙여 공유할 필요 없습니다)
 
 ### 공개 범위
 
