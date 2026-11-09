@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>동탄즐거운교회 주보</title>
+<meta name="description" content="주일 주보 · 예배순서 · 일상예배 챌린지 · 공동체 소식" />
+<meta name="theme-color" content="#732535" />
+<meta name="robots" content="noindex, nofollow" />
+<meta property="og:title" content="동탄즐거운교회 주보" />
+<meta property="og:description" content="이번 주 예배순서와 일상예배 챌린지를 휴대폰에서 바로 보세요." />
+<meta property="og:image" content="assets/logo.png" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="assets/icon-192.png" />
+<link rel="apple-touch-icon" href="assets/icon-192.png" />
+<style>
+:root{
+  --bg:#faf6ef; --card:#ffffff; --ink:#241a1d; --muted:#7c6e70; --line:#ebe2d6;
+  --brand:#7c2638; --brand2:#a54155; --brand-ink:#ffffff;
+  --gold:#bd8540; --soft:#fbeef0; --soft2:#f6f0e4;
+  --radius:18px; --shadow:0 1px 2px rgba(124,38,56,.05), 0 12px 30px rgba(124,38,56,.07);
+  --maxw:560px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#171113; --card:#211a1c; --ink:#f3ebec; --muted:#a4959a; --line:#34292c;
+    --brand:#e4a0b0; --brand2:#e4a0b0; --brand-ink:#1a1012;
+    --gold:#e0b571; --soft:#2b1f23; --soft2:#262022;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171113; --card:#211a1c; --ink:#f3ebec; --muted:#a4959a; --line:#34292c;
+  --brand:#e4a0b0; --brand2:#e4a0b0; --brand-ink:#1a1012;
+  --gold:#e0b571; --soft:#2b1f23; --soft2:#262022;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  font-size:16px; line-height:1.68; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px 96px}
+a{color:inherit}
+button{font:inherit; color:inherit; cursor:pointer}
+img{max-width:100%}
+
+/* ===== 히어로 ===== */
+.hero{position:relative; overflow:hidden; border-radius:0 0 26px 26px;
+  background:#732535 url("assets/hero.jpg") center 35%/cover; color:#fff}
+.hero:before{content:""; position:absolute; inset:0;
+  background:linear-gradient(170deg, rgba(115,37,53,.72) 0%, rgba(115,37,53,.88) 55%, rgba(90,26,40,.95) 100%)}
+.hero .inner{position:relative; max-width:var(--maxw); margin:0 auto; padding:18px 16px 20px}
+.logochip{background:#fbf8f1; border-radius:14px; padding:8px 12px; display:inline-flex; align-items:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.logochip img{height:44px; display:block}
+.denom{font-size:11px; letter-spacing:.2em; opacity:.8; margin:12px 0 0}
+.church{font-size:15.5px; font-weight:800; margin:1px 0 0; letter-spacing:.01em}
+.bdate{font-size:22px; font-weight:800; margin:8px 0 0; letter-spacing:-.025em}
+.blabel{display:inline-block; margin-top:7px; font-size:11.5px; font-weight:700;
+  background:rgba(255,255,255,.2); padding:3px 11px; border-radius:999px}
+.theme{margin:9px 0 0; font-size:16px; font-weight:700}
+.weekpick{margin-top:13px}
+.weekpick select{width:100%; padding:9px 12px; border-radius:12px; border:0;
+  background:rgba(255,255,255,.18); color:#fff; font-size:13.5px; font-weight:600;
+  appearance:none; -webkit-appearance:none}
+.weekpick select option{color:#111}
+
+/* ===== 카드 ===== */
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:16px; margin:14px 0}
+.card h2{margin:0 0 6px; font-size:17px; letter-spacing:-.01em; display:flex; align-items:center; gap:8px}
+.card h2 .ic{width:22px; height:22px; object-fit:contain; flex:0 0 22px}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .card h2 .ic{filter:brightness(1.7) saturate(.7)} }
+.card .sub{margin:0 0 12px; font-size:13px; color:var(--muted)}
+.card.lead{background:linear-gradient(140deg, var(--soft) 0%, var(--soft2) 100%); border-color:transparent}
+.photo{display:block; width:calc(100% + 32px); height:112px; object-fit:cover;
+  margin:-16px -16px 14px; border-radius:var(--radius) var(--radius) 0 0}
+.sec{display:none}
+.sec.on{display:block}
+
+/* ===== 예배순서 ===== */
+.order{list-style:none; margin:0; padding:0}
+.order li{display:flex; align-items:flex-start; gap:10px; padding:11px 2px; border-bottom:1px dashed var(--line)}
+.order li:last-child{border-bottom:0}
+.order .part{width:84px; flex:0 0 84px; font-weight:700; font-size:14.5px; color:var(--brand)}
+.order .mid{flex:1 1 auto; min-width:0; font-size:14px}
+.order .by{font-size:12.5px; color:var(--muted); white-space:nowrap; padding-top:2px}
+.chip{display:inline-flex; align-items:center; background:var(--soft); border:1px solid var(--line);
+  border-radius:999px; padding:3px 11px; font-size:13px; font-weight:600; max-width:100%}
+.chip.tap{cursor:pointer}
+.chip.tap:active{transform:scale(.97)}
+
+/* ===== 공통 ===== */
+.bigtext{font-size:21px; font-weight:800; letter-spacing:-.025em; margin:2px 0 8px; line-height:1.38}
+.kv{display:flex; gap:10px; font-size:14px; padding:7px 0; border-bottom:1px dashed var(--line)}
+.kv:last-child{border-bottom:0}
+.kv b{flex:0 0 80px; font-weight:700; color:var(--brand)}
+.kv .nt{display:block; font-size:12.5px; color:var(--muted)}
+.bullets{margin:0; padding-left:18px; font-size:14px}
+.bullets li{margin:6px 0}
+.quote{font-size:15px; line-height:1.82; background:var(--soft); border-radius:14px; padding:14px 15px; margin:0}
+.verse{font-size:16.5px; line-height:1.9; letter-spacing:-.01em; margin:0}
+.verseref{font-size:13px; font-weight:800; color:var(--brand); margin:0 0 7px; letter-spacing:.02em}
+
+/* ===== 버튼 ===== */
+.btns{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.btn{border:1px solid var(--line); background:var(--card); border-radius:12px; padding:10px 13px;
+  font-size:14px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px}
+.btn.pri{background:var(--brand); color:var(--brand-ink); border-color:transparent}
+.btn.gold{background:var(--gold); color:#fff; border-color:transparent}
+.btn.full{flex:1 1 100%; justify-content:center}
+.btn:active{transform:scale(.98)}
+
+/* ===== 소식 ===== */
+.notice{padding:12px 0; border-bottom:1px dashed var(--line)}
+.notice:last-child{border-bottom:0}
+.notice h3{margin:0 0 3px; font-size:15px; color:var(--brand2)}
+.notice p{margin:0; font-size:14px}
+.cal{display:flex; gap:10px; padding:9px 0; border-bottom:1px dashed var(--line); font-size:14px}
+.cal:last-child{border-bottom:0}
+.cal b{flex:0 0 108px; font-weight:700; color:var(--gold)}
+
+/* ===== 챌린지 ===== */
+.steps{list-style:none; margin:0; padding:0}
+.steps li{display:flex; gap:11px; padding:10px 0; border-bottom:1px dashed var(--line)}
+.steps li:last-child{border-bottom:0}
+.steps .n{flex:0 0 46px; font-weight:800; font-size:13px; color:var(--brand); padding-top:1px}
+.steps .t{font-size:14.5px}
+.steps .s{display:block; font-size:13px; color:var(--muted)}
+.days{display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-top:4px}
+.day{border:1px solid var(--line); border-radius:12px; padding:9px 0; text-align:center;
+  font-size:12px; font-weight:700; color:var(--muted); background:var(--card)}
+.day.on{background:var(--brand); color:var(--brand-ink); border-color:transparent}
+.day small{display:block; font-size:14px; margin-top:2px}
+textarea,input[type=text]{width:100%; border:1px solid var(--line); border-radius:12px; padding:11px 12px;
+  font:inherit; font-size:14.5px; background:var(--bg); color:var(--ink)}
+textarea{min-height:92px; resize:vertical}
+.saved{font-size:12.5px; color:var(--muted); margin:6px 0 0}
+
+/* ===== 신청 ===== */
+.opt{display:flex; align-items:center; gap:11px; padding:13px; border:1px solid var(--line);
+  border-radius:13px; margin-bottom:9px; background:var(--card)}
+.opt.sel{border-color:var(--brand); background:var(--soft); box-shadow:inset 0 0 0 1px var(--brand)}
+.opt .dot{width:20px; height:20px; flex:0 0 20px; border-radius:50%; border:2px solid var(--line); position:relative}
+.opt.sel .dot{border-color:var(--brand)}
+.opt.sel .dot:after{content:""; position:absolute; inset:3px; border-radius:50%; background:var(--brand)}
+.opt .nm{font-weight:700; font-size:15px}
+.opt .nt{font-size:13px; color:var(--muted)}
+.mine{background:var(--soft); border-radius:12px; padding:11px 13px; font-size:14px; margin-top:4px}
+.demo{display:inline-block; font-size:11px; font-weight:800; background:var(--gold); color:#fff;
+  border-radius:999px; padding:2px 9px; margin-left:6px; vertical-align:middle}
+
+/* ===== 섬김 ===== */
+.acct{border:1px solid var(--line); border-radius:14px; padding:13px; background:var(--soft2)}
+.acct .lb{font-size:13px; color:var(--muted)}
+.acct .no{font-size:18px; font-weight:800; margin:2px 0 6px; word-break:break-all; color:var(--brand)}
+
+/* ===== 탭바 ===== */
+.tabbar{position:fixed; left:0; right:0; bottom:0; z-index:40;
+  background:var(--card); border-top:1px solid var(--line);
+  padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.tabbar .in{max-width:var(--maxw); margin:0 auto; display:grid; grid-template-columns:repeat(6,1fr)}
+.tb{background:none; border:0; padding:6px 0 4px; display:flex; flex-direction:column; align-items:center;
+  gap:3px; font-size:10.5px; font-weight:700; color:var(--muted); letter-spacing:-.03em}
+.tb svg{width:21px; height:21px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.tb.on{color:var(--brand)}
+
+/* ===== 모달 ===== */
+.mask{position:fixed; inset:0; background:rgba(40,20,26,.5); z-index:50; display:none; align-items:flex-end}
+.mask.on{display:flex}
+.sheet{background:var(--card); width:100%; max-width:var(--maxw); margin:0 auto;
+  border-radius:22px 22px 0 0; padding:18px 18px calc(18px + env(safe-area-inset-bottom)); max-height:86vh; overflow:auto}
+.sheet h3{margin:0 0 4px; font-size:18px}
+.sheet .cl{position:sticky; top:0; float:right; background:none; border:0; font-size:22px; color:var(--muted)}
+.warn{font-size:13px; color:var(--muted); background:var(--soft2); padding:10px 12px; border-radius:12px; margin:12px 0 0}
+
+.foot{text-align:center; font-size:12px; color:var(--muted); margin:24px 0 4px; line-height:1.9}
+.foot img{height:40px; opacity:.85; display:block; margin:0 auto 8px}
+.toast{position:fixed; left:50%; transform:translateX(-50%); bottom:84px; z-index:60;
+  background:var(--brand); color:#fff; padding:10px 16px; border-radius:999px; font-size:14px;
+  font-weight:600; opacity:0; pointer-events:none; transition:opacity .2s}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <span class="logochip"><img src="assets/logo.png" alt="동탄즐거운교회" /></span>
+    <p class="denom" id="denom"></p>
+    <p class="church" id="churchName">교회</p>
+    <h1 class="bdate" id="bDate">—</h1>
+    <span class="blabel" id="bLabel"></span>
+    <p class="theme" id="bTheme"></p>
+    <div class="weekpick"><select id="weekSel" aria-label="주보 주차 선택"></select></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 주보 -->
+  <section class="sec on" id="sec-home">
+    <div class="card lead">
+      <h2><img class="ic" src="assets/ic-bible.png" alt="" />이번 주 말씀</h2>
+      <p class="bigtext" id="hSermonTitle">—</p>
+      <div class="kv"><b>본문</b><span id="hSermonText">—</span></div>
+      <div class="kv"><b>말씀 나눔</b><span id="hSermonBy">—</span></div>
+      <div class="btns" id="hSermonBtns"></div>
+    </div>
+    <div class="card">
+      <h2><img class="ic" src="assets/ic-cross.png" alt="" />예배 안내</h2>
+      <div id="hServices"></div>
+    </div>
+    <div class="card">
+      <img class="photo" src="assets/ph-coffee.jpg" alt="" />
+      <h2 id="gTitle">공동체 모임</h2>
+      <div id="hGroups"></div>
+    </div>
+    <div class="card">
+      <h2><img class="ic" src="assets/ic-pin.png" alt="" />오시는 길</h2>
+      <p class="sub" id="hAddr">—</p>
+      <div class="btns" id="hPlaceBtns"></div>
+    </div>
+    <div class="card">
+      <h2><img class="ic" src="assets/ic-online.png" alt="" />이 주보 보내기</h2>
+      <p class="sub">링크 하나로 열립니다. 설치할 앱이 없습니다.</p>
+      <div class="btns">
+        <button class="btn pri" id="btnShare">카톡·문자로 공유</button>
+        <button class="btn" id="btnInstall">홈 화면에 추가</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 순서 -->
+  <section class="sec" id="sec-order">
+    <div class="card">
+      <h2><img class="ic" src="assets/ic-cross.png" alt="" />예배 순서</h2>
+      <ul class="order" id="orderList"></ul>
+    </div>
+    <div class="card">
+      <h2>설교 노트</h2>
+      <p class="sub" id="memoPrompt"></p>
+      <textarea id="memo" placeholder="마음에 남는 표현 / 하나님이 주시는 메시지 / 실천할 한 가지"></textarea>
+      <p class="saved" id="memoSaved">이 휴대폰에 자동 저장됩니다.</p>
+    </div>
+  </section>
+
+  <!-- 챌린지 -->
+  <section class="sec" id="sec-challenge">
+    <div id="chBox"></div>
+  </section>
+
+  <!-- 소식 -->
+  <section class="sec" id="sec-news">
+    <div id="pickBox"></div>
+    <div class="card">
+      <h2>공동체 소식</h2>
+      <div id="nList"></div>
+    </div>
+    <div class="card">
+      <h2>이번 주 일정</h2>
+      <div id="nCal"></div>
+    </div>
+    <div class="card">
+      <h2><img class="ic" src="assets/ic-heart.png" alt="" />나눔 · 기도 제목</h2>
+      <p class="sub">목사님께 바로 보냅니다. 적은 내용은 보내기 전까지 이 휴대폰에만 있습니다.</p>
+      <input type="text" id="fbName" placeholder="이름 (선택)" />
+      <textarea id="fbText" placeholder="기도 제목, 나눔, 예배 소감 무엇이든 좋습니다" style="margin-top:8px"></textarea>
+      <div class="btns">
+        <button class="btn pri full" id="fbSend">문자로 보내기</button>
+        <button class="btn full" id="fbCopy">복사해서 카톡으로 보내기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 섬김 -->
+  <section class="sec" id="sec-serve">
+    <div class="card">
+      <h2><img class="ic" src="assets/ic-heart.png" alt="" />헌금 안내</h2>
+      <p class="sub">계좌번호를 누르면 복사됩니다.</p>
+      <div id="sAccts"></div>
+      <p class="warn" id="sAcctNote"></p>
+    </div>
+    <div class="card" id="sMinistryCard">
+      <img class="photo" src="assets/ph-hands.jpg" alt="" />
+      <h2 id="sMinTitle"></h2>
+      <p class="sub" id="sMinSub"></p>
+      <ul class="bullets" id="sMinItems"></ul>
+      <p class="warn" id="sMinNote"></p>
+      <div class="btns" id="sMinBtns"></div>
+    </div>
+    <div class="card">
+      <h2>후원 선교사</h2>
+      <div id="sMiss"></div>
+    </div>
+    <div class="card">
+      <h2><img class="ic" src="assets/ic-call.png" alt="" />교회 연락처</h2>
+      <div class="btns" id="sContact"></div>
+    </div>
+  </section>
+
+  <!-- 비전 -->
+  <section class="sec" id="sec-vision">
+    <div class="card lead">
+      <p class="bigtext" id="vSlogan">—</p>
+      <p class="sub" id="vSloganSub" style="white-space:pre-line; color:var(--ink); opacity:.75"></p>
+    </div>
+    <div class="card">
+      <h2 id="vSlowTitle"></h2>
+      <p class="quote" id="vSlowLead"></p>
+      <ul class="bullets" id="vSlowItems" style="margin-top:12px"></ul>
+    </div>
+    <div class="card">
+      <h2 id="vValTitle"></h2>
+      <div id="vValues"></div>
+    </div>
+    <div class="card">
+      <h2 id="vConfTitle"></h2>
+      <p id="vConfess" style="font-size:14px; margin:0"></p>
+      <p class="warn" id="vConfNote"></p>
+    </div>
+  </section>
+
+  <p class="foot">
+    <img src="assets/logo.png" alt="" />
+    <span id="footName">교회</span>
+  </p>
+</div>
+
+<nav class="tabbar">
+  <div class="in">
+    <button class="tb on" data-sec="home"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>주보</button>
+    <button class="tb" data-sec="order"><svg viewBox="0 0 24 24"><path d="M7 6h13M7 12h13M7 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>순서</button>
+    <button class="tb" data-sec="challenge"><svg viewBox="0 0 24 24"><path d="M20 7L9 18l-5-5"/></svg>챌린지</button>
+    <button class="tb" data-sec="news"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0112 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 19a2 2 0 004 0"/></svg>소식</button>
+    <button class="tb" data-sec="serve"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.3-7-9a4 4 0 017-2.6A4 4 0 0119 11c0 4.7-7 9-7 9z"/></svg>섬김</button>
+    <button class="tb" data-sec="vision"><svg viewBox="0 0 24 24"><path d="M4 5v14l8-2 8 2V5l-8 2z"/><path d="M12 7v12"/></svg>비전</button>
+  </div>
+</nav>
+
+<div class="mask" id="mask"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="data/hymns.js"></script>
+<script src="data/bulletins.js"></script>
+<script>
+(function(){
+  var D = window.BULLETINS, H = window.HYMNS || {};
+  var $ = function(s){ return document.querySelector(s); };
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function digits(s){ return String(s||'').replace(/[^0-9]/g,''); }
+  function toast(msg){ var t=$('#toast'); t.textContent=msg; t.classList.add('on');
+    clearTimeout(t._t); t._t=setTimeout(function(){ t.classList.remove('on'); },1700); }
+  function copy(text, msg){
+    var done=function(){ toast(msg||'복사했습니다'); };
+    function fallback(){
+      var ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed';
+      ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }catch(e){ toast('복사가 안 됩니다'); }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
+  }
+  function fmtDate(d){
+    var p=d.split('-'), y=+p[0], m=+p[1], dd=+p[2];
+    var w=['일','월','화','수','목','금','토'][new Date(y,m-1,dd).getDay()];
+    return y+'년 '+m+'월 '+dd+'일 ('+w+')';
+  }
+  function sheet(title, html){
+    $('#sheet').innerHTML='<button class="cl" id="shClose" aria-label="닫기">&times;</button><h3>'+title+'</h3>'+html;
+    $('#mask').classList.add('on');
+    $('#shClose').onclick=closeSheet;
+  }
+  function closeSheet(){ $('#mask').classList.remove('on'); }
+  $('#mask').addEventListener('click', function(e){ if(e.target.id==='mask') closeSheet(); });
+
+  var list=(D.list||[]).slice().sort(function(a,b){ return a.date<b.date?1:-1; });
+  function currentIndex(){
+    var t=new Date(); t.setHours(0,0,0,0);
+    for(var i=list.length-1;i>=0;i--){ if(new Date(list[i].date+'T00:00:00')>=t) return i; }
+    return 0;
+  }
+  var idx=currentIndex();
+
+  function render(){
+    var b=list[idx], c=D.church;
+
+    $('#denom').textContent=c.denom||'';
+    $('#churchName').textContent=c.name+(c.pastor?' · '+c.pastor:'');
+    $('#footName').textContent=c.name+'  '+(c.nameEn||'');
+    $('#bDate').textContent=fmtDate(b.date)+(b.issue?'  '+b.issue:'');
+    $('#bLabel').textContent=b.label||'';
+    $('#bLabel').style.display=b.label?'':'none';
+    $('#bTheme').textContent=b.theme?'“'+b.theme+'”':'';
+
+    var sel=$('#weekSel'); sel.innerHTML='';
+    list.forEach(function(x,i){
+      var o=document.createElement('option'); o.value=i;
+      o.textContent=fmtDate(x.date)+(x.issue?' · '+x.issue:'')+(i===currentIndex()?'  ← 이번 주':'');
+      sel.appendChild(o);
+    });
+    sel.value=idx;
+    sel.onchange=function(){ idx=+sel.value; render(); window.scrollTo(0,0); };
+    sel.parentNode.style.display = list.length>1 ? '' : 'none';
+
+    /* 홈 */
+    var sm=b.sermon||{};
+    $('#hSermonTitle').textContent=sm.title||'—';
+    $('#hSermonText').textContent=sm.text||'—';
+    $('#hSermonBy').textContent=sm.preacher||'—';
+    var hb=[];
+    if(sm.text) hb.push('<button class="btn" data-act="bible" data-v="'+esc(sm.text)+'">본문 보기</button>');
+    if(sm.youtube) hb.push('<a class="btn pri" href="'+esc(sm.youtube)+'" target="_blank" rel="noopener">설교 영상</a>');
+    $('#hSermonBtns').innerHTML=hb.join('');
+
+    $('#hServices').innerHTML=(c.services||[]).map(function(s){
+      return '<div class="kv"><b>'+esc(s.name)+'</b><span>'+esc(s.time)+
+             (s.note?'<span class="nt">'+esc(s.note)+'</span>':'')+'</span></div>';
+    }).join('');
+
+    var g=c.groups||{};
+    $('#gTitle').textContent=g.title||'공동체 모임';
+    $('#hGroups').innerHTML=(g.items||[]).map(function(x){
+      return '<div class="notice"><h3>'+esc(x.name)+'</h3><p>'+esc(x.when)+'</p></div>';
+    }).join('')+(g.note?'<p class="warn">'+esc(g.note)+'</p>':'');
+
+    $('#hAddr').textContent=c.address||'';
+    var addr=encodeURIComponent(c.address||'');
+    $('#hPlaceBtns').innerHTML=
+      '<button class="btn" data-act="copy" data-v="'+esc(c.address||'')+'">주소 복사</button>'+
+      '<a class="btn" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/'+addr+'">카카오맵</a>'+
+      '<a class="btn" href="tmap://search?name='+addr+'">티맵</a>'+
+      (c.tel?'<a class="btn pri" href="tel:'+digits(c.tel)+'">전화</a>':'');
+
+    /* 순서 */
+    $('#orderList').innerHTML=(b.order||[]).map(function(r){
+      var mid='';
+      if(r.hymn){
+        var t=(H[r.hymn]||{}).title;
+        mid='<span class="chip tap" data-act="hymn" data-v="'+esc(r.hymn)+'">찬송 '+esc(r.hymn)+'장'+(t?' · '+esc(t):'')+'</span>';
+      } else if(r.bible){
+        mid='<span class="chip tap" data-act="bible" data-v="'+esc(r.bible)+'">'+esc(r.bible)+'</span>'+
+            (r.note?'<div style="margin-top:4px">'+esc(r.note)+'</div>':'');
+      } else if(r.note){
+        mid=esc(r.note);
+      }
+      return '<li><span class="part">'+esc(r.part)+'</span><span class="mid">'+mid+'</span>'+
+             '<span class="by">'+esc(r.by||'')+'</span></li>';
+    }).join('');
+
+    $('#memoPrompt').textContent=b.memoPrompt||'';
+    var mk='memo:'+b.date, ta=$('#memo');
+    ta.value=get(mk)||'';
+    ta.oninput=function(){ set(mk, ta.value); $('#memoSaved').textContent='저장됨 · 이 휴대폰에만 보관됩니다.'; };
+
+    renderChallenge(b);
+    renderPick(b);
+
+    /* 소식 */
+    $('#nList').innerHTML=(b.notices||[]).length?(b.notices||[]).map(function(n){
+      return '<div class="notice">'+(n.title?'<h3>'+esc(n.title)+'</h3>':'')+'<p>'+esc(n.body||'')+'</p></div>';
+    }).join(''):'<p class="sub">등록된 소식이 없습니다.</p>';
+    $('#nCal').innerHTML=(b.calendar||[]).length?(b.calendar||[]).map(function(x){
+      return '<div class="cal"><b>'+esc(x.when)+'</b><span>'+esc(x.what)+'</span></div>';
+    }).join(''):'<p class="sub">등록된 일정이 없습니다.</p>';
+
+    /* 섬김 */
+    $('#sAccts').innerHTML=(c.accounts||[]).map(function(a){
+      var full=a.bank+' '+a.number+' '+a.holder;
+      return '<div class="acct"><div class="lb">'+esc(a.label)+'</div>'+
+        '<div class="no">'+esc(a.bank)+' '+esc(a.number)+'</div>'+
+        '<div class="lb">예금주 '+esc(a.holder)+'</div>'+
+        '<div class="btns"><button class="btn pri" data-act="copy" data-v="'+esc(full)+'">계좌 복사</button></div></div>';
+    }).join('');
+    $('#sAcctNote').textContent=c.accountNote||'';
+
+    var mn=c.ministry;
+    if(mn){
+      $('#sMinTitle').textContent=mn.title||'';
+      $('#sMinSub').textContent=mn.subtitle||'';
+      $('#sMinItems').innerHTML=(mn.items||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('');
+      $('#sMinNote').textContent=mn.note||'';
+      $('#sMinBtns').innerHTML=c.tel?'<a class="btn pri" href="tel:'+digits(c.tel)+'">문의 전화</a>':'';
+    } else { $('#sMinistryCard').style.display='none'; }
+
+    $('#sMiss').innerHTML=(c.missionaries||[]).map(function(m){
+      return '<div class="kv"><b>'+esc(m.area)+'</b><span>'+esc(m.who)+'</span></div>';
+    }).join('');
+
+    $('#sContact').innerHTML=
+      (c.tel?'<a class="btn pri" href="tel:'+digits(c.tel)+'">'+esc(c.tel)+'</a>':'')+
+      (c.site?'<a class="btn" target="_blank" rel="noopener" href="'+esc(c.site)+'">교회 홈페이지</a>':'');
+
+    /* 비전 */
+    var v=c.vision||{};
+    $('#vSlogan').textContent=c.slogan||'';
+    $('#vSloganSub').textContent=c.sloganSub||'';
+    $('#vSlowTitle').textContent=v.slowTitle||'';
+    $('#vSlowLead').textContent=v.slowLead||'';
+    $('#vSlowItems').innerHTML=(v.slowItems||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('');
+    $('#vValTitle').textContent=v.valueTitle||'';
+    $('#vValues').innerHTML=(v.values||[]).map(function(x){
+      return '<div class="kv"><b>'+esc(x.k)+'</b><span>'+esc(x.v)+'</span></div>';
+    }).join('');
+    $('#vConfTitle').textContent=v.confessTitle||'';
+    $('#vConfess').textContent=v.confess||'';
+    $('#vConfNote').textContent=v.confessNote||'';
+
+    bindFeedback(b);
+  }
+
+  /* ---- 나눔 · 기도 제목 ---- */
+  function bindFeedback(b){
+    var nk='fb:name', tk='fb:text:'+b.date;
+    var nm=$('#fbName'), tx=$('#fbText');
+    nm.value=get(nk)||''; tx.value=get(tk)||'';
+    nm.oninput=function(){ set(nk, nm.value); };
+    tx.oninput=function(){ set(tk, tx.value); };
+    function body(){
+      if(!tx.value.trim()){ toast('내용을 적어 주세요'); return null; }
+      return '['+D.church.name+' 나눔]\n'+(nm.value.trim()?nm.value.trim()+'\n':'')+tx.value.trim();
+    }
+    $('#fbSend').onclick=function(){
+      var t=body(); if(!t) return;
+      var tel=digits(D.church.tel);
+      if(!tel){ copy(t,'복사했습니다'); return; }
+      location.href='sms:'+tel+'?&body='+encodeURIComponent(t);
+    };
+    $('#fbCopy').onclick=function(){
+      var t=body(); if(!t) return;
+      copy(t,'복사했습니다. 카톡에 붙여 넣어 주세요');
+    };
+  }
+
+  /* ---- 일상예배 챌린지 ---- */
+  function renderChallenge(b){
+    var box=$('#chBox'), ch=b.challenge;
+    if(!ch){ box.innerHTML='<div class="card"><h2>일상예배 챌린지</h2><p class="sub">이번 주 챌린지가 없습니다.</p></div>'; return; }
+    var dayNames=['월','화','수','목','금','토','주일'];
+    var dk='ch:'+b.date, done=(get(dk)||'').split(',').filter(Boolean);
+    var ak='ans:'+b.date;
+
+    box.innerHTML=
+      '<div class="card lead">'+
+        '<p class="verseref">'+esc(ch.verseRef||'')+'</p>'+
+        '<p class="verse">'+esc(ch.verse||'')+'</p>'+
+        '<div class="btns"><button class="btn" data-act="copy" data-v="'+esc((ch.verseRef||'')+' '+(ch.verse||''))+'">말씀 복사</button></div>'+
+      '</div>'+
+      '<div class="card">'+
+        '<h2><img class="ic" src="assets/ic-bible.png" alt="" />챌린지 하는 법</h2>'+
+        '<ul class="steps">'+(ch.steps||[]).map(function(s){
+          return '<li><span class="n">'+esc(s.k)+'</span><span class="t">'+esc(s.v)+
+                 (s.sample?'<span class="s">'+esc(s.sample)+'</span>':'')+'</span></li>';
+        }).join('')+'</ul>'+
+      '</div>'+
+      '<div class="card">'+
+        '<h2>이번 주 체크</h2>'+
+        '<p class="sub">실천한 날을 눌러 주세요.</p>'+
+        '<div class="days" id="days"></div>'+
+        '<p class="saved" id="dayCnt"></p>'+
+      '</div>'+
+      '<div class="card">'+
+        '<h2>묵상 질문</h2>'+
+        '<p class="quote">'+esc(ch.question||'')+'</p>'+
+        '<textarea id="ans" placeholder="한 문장으로 답해 보세요" style="margin-top:12px"></textarea>'+
+        '<p class="saved" id="ansSaved">이 휴대폰에 자동 저장됩니다.</p>'+
+      '</div>'+
+      '<div class="card">'+
+        '<h2>이번 주 실천 과제</h2>'+
+        '<p style="font-size:14.5px; margin:0">'+esc(ch.task||'')+'</p>'+
+        (ch.note?'<p class="warn">'+esc(ch.note)+'</p>':'')+
+      '</div>';
+
+    function drawDays(){
+      $('#days').innerHTML=dayNames.map(function(d,i){
+        return '<div class="day'+(done.indexOf(String(i))>=0?' on':'')+'" data-day="'+i+'">'+
+               d+'<small>'+(done.indexOf(String(i))>=0?'✓':'·')+'</small></div>';
+      }).join('');
+      $('#dayCnt').textContent='이번 주 '+done.length+'일 실천';
+      Array.prototype.forEach.call(document.querySelectorAll('[data-day]'), function(el){
+        el.onclick=function(){
+          var i=el.getAttribute('data-day'), p=done.indexOf(i);
+          if(p>=0) done.splice(p,1); else done.push(i);
+          set(dk, done.join(',')); drawDays();
+        };
+      });
+    }
+    drawDays();
+    var at=$('#ans'); at.value=get(ak)||'';
+    at.oninput=function(){ set(ak, at.value); $('#ansSaved').textContent='저장됨 · 이 휴대폰에만 보관됩니다.'; };
+  }
+
+  /* ---- 신청 ---- */
+  function renderPick(b){
+    var box=$('#pickBox'), p=b.picks;
+    if(!p){ box.innerHTML=''; return; }
+    var key='pick:'+b.date, mine=get(key);
+    box.innerHTML='<div class="card"><h2>'+esc(p.title)+(p.demo?'<span class="demo">예시</span>':'')+'</h2>'+
+      '<p class="sub">'+esc(p.desc||'')+(p.deadline&&!p.demo?' · <b>'+esc(p.deadline)+'</b>':'')+'</p>'+
+      '<input type="text" id="pickName" placeholder="이름" />'+
+      '<div id="optList" style="margin-top:10px"></div><div class="mine" id="mineBox"></div>'+
+      '<div class="btns"><button class="btn pri full" id="pickSend">문자로 보내기</button>'+
+      '<button class="btn full" id="copyPick">복사해서 카톡으로 보내기</button></div>'+
+      '<p class="warn">선택은 <b>이 휴대폰에만</b> 저장됩니다. 전체 인원을 자동으로 모으려면 구글 스프레드시트 연결이 필요합니다(README 참고).</p></div>';
+    var pn=$('#pickName'); pn.value=get('fb:name')||'';
+    pn.oninput=function(){ set('fb:name', pn.value); };
+    function msg(){
+      var cur=(p.options||[]).filter(function(o){ return o.id===mine; })[0];
+      if(!cur){ toast('먼저 하나 골라 주세요'); return null; }
+      return '['+D.church.name+'] '+p.title+'\n이름: '+(pn.value.trim()||'(이름)')+'\n선택: '+cur.name;
+    }
+    function draw(){
+      $('#optList').innerHTML=(p.options||[]).map(function(o){
+        return '<div class="opt'+(mine===o.id?' sel':'')+'" data-pick="'+esc(o.id)+'">'+
+          '<span class="dot"></span><span><span class="nm">'+esc(o.name)+'</span>'+
+          (o.note?'<br /><span class="nt">'+esc(o.note)+'</span>':'')+'</span></div>';
+      }).join('');
+      var cur=(p.options||[]).filter(function(o){ return o.id===mine; })[0];
+      $('#mineBox').innerHTML=cur?'내 선택 · <b>'+esc(cur.name)+'</b> (다시 누르면 바뀝니다)'
+                                 :'아직 고르지 않았습니다. 위에서 하나 눌러 주세요.';
+      Array.prototype.forEach.call(document.querySelectorAll('[data-pick]'), function(el){
+        el.onclick=function(){ mine=el.getAttribute('data-pick'); set(key,mine); draw(); toast('선택을 저장했습니다'); };
+      });
+      $('#pickSend').onclick=function(){
+        var t=msg(); if(!t) return;
+        var tel=digits(D.church.tel);
+        if(!tel){ copy(t); return; }
+        location.href='sms:'+tel+'?&body='+encodeURIComponent(t);
+      };
+      $('#copyPick').onclick=function(){
+        var t=msg(); if(!t) return;
+        copy(t,'복사했습니다. 카톡에 붙여 넣어 주세요');
+      };
+    }
+    draw();
+  }
+
+  function openHymn(no){
+    var t=(H[no]||{}).title||'';
+    var q=encodeURIComponent('새찬송가 '+no+'장 '+t);
+    sheet('찬송가 '+esc(no)+'장',
+      '<p class="bigtext">'+(t?esc(t):'제목이 등록되지 않았습니다')+'</p>'+
+      '<div class="btns"><a class="btn pri" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query='+q+'">유튜브에서 듣기</a></div>'+
+      '<p class="warn">가사 전문은 넣지 않았습니다. 새찬송가 가사는 한국찬송가공회 저작물이라 웹 게시에는 사용 허락이 필요합니다.</p>');
+  }
+  function openBible(ref){
+    var q=encodeURIComponent(ref+' 개역개정');
+    sheet('성경 본문',
+      '<p class="bigtext">'+esc(ref)+'</p>'+
+      '<div class="btns">'+
+        '<a class="btn pri" target="_blank" rel="noopener" href="https://www.bskorea.or.kr/bible/korbibReadpage.php">대한성서공회</a>'+
+        '<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/search?q='+q+'">본문 검색</a>'+
+        '<button class="btn" data-act="copy" data-v="'+esc(ref)+'">장절 복사</button>'+
+      '</div>');
+  }
+
+  document.addEventListener('click', function(e){
+    var el=e.target.closest?e.target.closest('[data-act]'):null;
+    if(!el) return;
+    var act=el.getAttribute('data-act'), v=el.getAttribute('data-v');
+    if(act==='copy') copy(v);
+    else if(act==='hymn') openHymn(v);
+    else if(act==='bible') openBible(v);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.tb'), function(btn){
+    btn.onclick=function(){
+      Array.prototype.forEach.call(document.querySelectorAll('.tb'), function(b){ b.classList.remove('on'); });
+      Array.prototype.forEach.call(document.querySelectorAll('.sec'), function(s){ s.classList.remove('on'); });
+      btn.classList.add('on');
+      document.getElementById('sec-'+btn.getAttribute('data-sec')).classList.add('on');
+      window.scrollTo(0,0);
+    };
+  });
+
+  $('#btnShare').onclick=function(){
+    var txt=D.church.name+' 주보 · '+fmtDate(list[idx].date);
+    if(navigator.share){ navigator.share({title:txt, url:location.href}).catch(function(){}); }
+    else copy(txt+'\n'+location.href, '링크를 복사했습니다');
+  };
+  $('#btnInstall').onclick=function(){
+    sheet('홈 화면에 추가',
+      '<div class="kv"><b>아이폰</b><span>사파리 아래 <b>공유</b> → <b>홈 화면에 추가</b></span></div>'+
+      '<div class="kv"><b>안드로이드</b><span>크롬 우측 상단 <b>⋮</b> → <b>홈 화면에 추가</b></span></div>'+
+      '<p class="warn">추가하면 앱처럼 아이콘이 생깁니다. 내용은 교회에서 주보를 올리는 즉시 바뀝니다 — 앱스토어 심사나 업데이트를 기다릴 필요가 없습니다.</p>');
+  };
+
+  render();
+
+  if('serviceWorker' in navigator && location.protocol==='https:'){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
