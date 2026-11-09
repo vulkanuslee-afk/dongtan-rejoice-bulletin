@@ -173,28 +173,31 @@ textarea{min-height:92px; resize:vertical}
   box-shadow:0 -6px 22px rgba(0,0,0,.10);
   padding:7px 5px calc(7px + env(safe-area-inset-bottom))}
 .tabbar .in{max-width:var(--maxw); margin:0 auto; display:grid; grid-template-columns:repeat(6,1fr); gap:3px}
-.tb{background:none; border:0; padding:8px 0 6px; display:flex; flex-direction:column; align-items:center;
+.tb{background:none; border:0; padding:6px 0 5px; display:flex; flex-direction:column; align-items:center;
   gap:4px; font-size:13px; font-weight:800; color:var(--ink); letter-spacing:-.04em;
   border-radius:14px; line-height:1.15}
-.tb svg{width:27px; height:27px; stroke:var(--c); fill:none; stroke-width:2.1;
+.tb .ico{width:100%; max-width:48px; height:35px; border-radius:12px; background:var(--cb);
+  display:flex; align-items:center; justify-content:center}
+.tb svg{width:25px; height:25px; stroke:var(--c); fill:none; stroke-width:2.3;
   stroke-linecap:round; stroke-linejoin:round}
-.tb.on{background:var(--c); color:var(--brand-ink); box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.tb.on{background:var(--c); color:var(--brand-ink); box-shadow:0 5px 16px rgba(0,0,0,.22)}
+.tb.on .ico{background:rgba(255,255,255,.25)}
 .tb.on svg{stroke:var(--brand-ink)}
 
-/* 탭마다 다른 색 — 어르신들이 위치가 아니라 색으로도 찾게 */
-.tb[data-sec="home"]     {--c:#8C2F48}
-.tb[data-sec="order"]    {--c:#1F6B5C}
-.tb[data-sec="challenge"]{--c:#B5651D}
-.tb[data-sec="news"]     {--c:#1F5F94}
-.tb[data-sec="serve"]    {--c:#7A4FA3}
-.tb[data-sec="vision"]   {--c:#4A6B1F}
+/* 탭마다 또렷하게 다른 색 — 어르신들이 위치가 아니라 색으로도 찾게 */
+.tb[data-sec="home"]     {--c:#C62828; --cb:#FBE2E2}
+.tb[data-sec="order"]    {--c:#2E7D32; --cb:#E1F0E2}
+.tb[data-sec="challenge"]{--c:#EF6C00; --cb:#FDEAD8}
+.tb[data-sec="news"]     {--c:#1565C0; --cb:#E0EBF9}
+.tb[data-sec="serve"]    {--c:#7B1FA2; --cb:#F0E3F7}
+.tb[data-sec="vision"]   {--c:#00838F; --cb:#DBF0F2}
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .tb[data-sec="home"]     {--c:#E78FA6}
-  :root:not([data-theme="light"]) .tb[data-sec="order"]    {--c:#5FC6AE}
-  :root:not([data-theme="light"]) .tb[data-sec="challenge"]{--c:#EDAC63}
-  :root:not([data-theme="light"]) .tb[data-sec="news"]     {--c:#7ABAEC}
-  :root:not([data-theme="light"]) .tb[data-sec="serve"]    {--c:#BFA2E6}
-  :root:not([data-theme="light"]) .tb[data-sec="vision"]   {--c:#AFCC78}
+  :root:not([data-theme="light"]) .tb[data-sec="home"]     {--c:#FF8A8A; --cb:#3A1F22}
+  :root:not([data-theme="light"]) .tb[data-sec="order"]    {--c:#7BD68A; --cb:#1D2A20}
+  :root:not([data-theme="light"]) .tb[data-sec="challenge"]{--c:#FFB067; --cb:#2E2318}
+  :root:not([data-theme="light"]) .tb[data-sec="news"]     {--c:#7FB8F5; --cb:#1A2430}
+  :root:not([data-theme="light"]) .tb[data-sec="serve"]    {--c:#D3A0EE; --cb:#271C2E}
+  :root:not([data-theme="light"]) .tb[data-sec="vision"]   {--c:#5FD3DE; --cb:#15282B}
 }
 
 /* ===== 글자 크기 ===== */
@@ -383,12 +386,12 @@ textarea{min-height:92px; resize:vertical}
 
 <nav class="tabbar">
   <div class="in">
-    <button class="tb on" data-sec="home"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>주보</button>
-    <button class="tb" data-sec="order"><svg viewBox="0 0 24 24"><path d="M7 6h13M7 12h13M7 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>순서</button>
-    <button class="tb" data-sec="challenge"><svg viewBox="0 0 24 24"><path d="M20 7L9 18l-5-5"/></svg>챌린지</button>
-    <button class="tb" data-sec="news"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0112 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 19a2 2 0 004 0"/></svg>소식</button>
-    <button class="tb" data-sec="serve"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.3-7-9a4 4 0 017-2.6A4 4 0 0119 11c0 4.7-7 9-7 9z"/></svg>섬김</button>
-    <button class="tb" data-sec="vision"><svg viewBox="0 0 24 24"><path d="M4 5v14l8-2 8 2V5l-8 2z"/><path d="M12 7v12"/></svg>비전</button>
+    <button class="tb on" data-sec="home"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span>주보</button>
+    <button class="tb" data-sec="order"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 6h13M7 12h13M7 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg></span>순서</button>
+    <button class="tb" data-sec="challenge"><span class="ico"><svg viewBox="0 0 24 24"><path d="M20 7L9 18l-5-5"/></svg></span>챌린지</button>
+    <button class="tb" data-sec="news"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0112 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 19a2 2 0 004 0"/></svg></span>소식</button>
+    <button class="tb" data-sec="serve"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.3-7-9a4 4 0 017-2.6A4 4 0 0119 11c0 4.7-7 9-7 9z"/></svg></span>섬김</button>
+    <button class="tb" data-sec="vision"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5v14l8-2 8 2V5l-8 2z"/><path d="M12 7v12"/></svg></span>비전</button>
   </div>
 </nav>
 
