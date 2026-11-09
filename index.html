@@ -557,9 +557,9 @@ textarea{min-height:92px; resize:vertical}
 
     box.innerHTML=
       '<div class="card lead">'+
-        '<p class="verseref">'+esc(ch.verseRef||'')+'</p>'+
-        '<p class="verse">'+esc(ch.verse||'')+'</p>'+
-        '<div class="btns"><button class="btn" data-act="copy" data-v="'+esc((ch.verseRef||'')+' '+(ch.verse||''))+'">말씀 복사</button></div>'+
+        '<p class="verseref">'+esc(ch.verseRef||'')+(ch.verse?'':'<span class="tag">개역한글</span>')+'</p>'+
+        '<div id="chVerse" class="verse">'+(ch.verse?esc(ch.verse):'<span class="loading">본문을 불러오는 중…</span>')+'</div>'+
+        '<div class="btns"><button class="btn" id="chCopy">말씀 복사</button></div>'+
       '</div>'+
       '<div class="card">'+
         '<h2><img class="ic" src="assets/ic-bible.png" alt="" />챌린지 하는 법</h2>'+
@@ -585,6 +585,23 @@ textarea{min-height:92px; resize:vertical}
         '<p style="font-size:14.5px; margin:0">'+esc(ch.task||'')+'</p>'+
         (ch.note?'<p class="warn">'+esc(ch.note)+'</p>':'')+
       '</div>';
+
+    /* verse 를 안 적어두면 장절로 본문을 자동으로 불러옵니다 */
+    var vText=ch.verse||'';
+    if(!ch.verse && ch.verseRef){
+      var pp=parseRef(ch.verseRef);
+      if(pp){
+        loadBook(pp.ab, function(err){
+          var el=$('#chVerse'); if(!el) return;
+          var r=err?null:passageHtml(pp);
+          if(r){ el.innerHTML=r.html; vText=r.text; }
+          else { el.innerHTML='<span class="loading">본문을 불러오지 못했습니다.</span>'; }
+        });
+      } else {
+        $('#chVerse').innerHTML='<span class="loading">본문을 찾지 못했습니다.</span>';
+      }
+    }
+    $('#chCopy').onclick=function(){ copy((ch.verseRef||'')+'\n'+vText); };
 
     function drawDays(){
       $('#days').innerHTML=dayNames.map(function(d,i){
