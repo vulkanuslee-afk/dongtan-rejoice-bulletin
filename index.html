@@ -40,9 +40,9 @@ html,body{margin:0;padding:0}
 body{
   background:var(--bg); color:var(--ink);
   font-family:system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
-  font-size:16px; line-height:1.68; -webkit-text-size-adjust:100%;
+  font-size:17px; line-height:1.7; -webkit-text-size-adjust:100%;
 }
-.wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px 96px}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px 118px}
 a{color:inherit}
 button{font:inherit; color:inherit; cursor:pointer}
 img{max-width:100%}
@@ -166,13 +166,41 @@ textarea{min-height:92px; resize:vertical}
 
 /* ===== 탭바 ===== */
 .tabbar{position:fixed; left:0; right:0; bottom:0; z-index:40;
-  background:var(--card); border-top:1px solid var(--line);
-  padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
-.tabbar .in{max-width:var(--maxw); margin:0 auto; display:grid; grid-template-columns:repeat(6,1fr)}
-.tb{background:none; border:0; padding:6px 0 4px; display:flex; flex-direction:column; align-items:center;
-  gap:3px; font-size:10.5px; font-weight:700; color:var(--muted); letter-spacing:-.03em}
-.tb svg{width:21px; height:21px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
-.tb.on{color:var(--brand)}
+  background:var(--card); border-top:3px solid var(--line);
+  box-shadow:0 -6px 22px rgba(0,0,0,.10);
+  padding:7px 5px calc(7px + env(safe-area-inset-bottom))}
+.tabbar .in{max-width:var(--maxw); margin:0 auto; display:grid; grid-template-columns:repeat(6,1fr); gap:3px}
+.tb{background:none; border:0; padding:8px 0 6px; display:flex; flex-direction:column; align-items:center;
+  gap:4px; font-size:13px; font-weight:800; color:var(--ink); letter-spacing:-.04em;
+  border-radius:14px; line-height:1.15}
+.tb svg{width:27px; height:27px; stroke:var(--c); fill:none; stroke-width:2.1;
+  stroke-linecap:round; stroke-linejoin:round}
+.tb.on{background:var(--c); color:var(--brand-ink); box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.tb.on svg{stroke:var(--brand-ink)}
+
+/* 탭마다 다른 색 — 어르신들이 위치가 아니라 색으로도 찾게 */
+.tb[data-sec="home"]     {--c:#8C2F48}
+.tb[data-sec="order"]    {--c:#1F6B5C}
+.tb[data-sec="challenge"]{--c:#B5651D}
+.tb[data-sec="news"]     {--c:#1F5F94}
+.tb[data-sec="serve"]    {--c:#7A4FA3}
+.tb[data-sec="vision"]   {--c:#4A6B1F}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .tb[data-sec="home"]     {--c:#E78FA6}
+  :root:not([data-theme="light"]) .tb[data-sec="order"]    {--c:#5FC6AE}
+  :root:not([data-theme="light"]) .tb[data-sec="challenge"]{--c:#EDAC63}
+  :root:not([data-theme="light"]) .tb[data-sec="news"]     {--c:#7ABAEC}
+  :root:not([data-theme="light"]) .tb[data-sec="serve"]    {--c:#BFA2E6}
+  :root:not([data-theme="light"]) .tb[data-sec="vision"]   {--c:#AFCC78}
+}
+
+/* ===== 글자 크기 ===== */
+.hero .inner, .wrap{zoom:var(--zoom,1)}
+.fsrow{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px}
+.fsbtn{border:2px solid var(--line); background:var(--card); border-radius:13px; padding:12px 0;
+  font-weight:800; color:var(--ink)}
+.fsbtn.on{border-color:var(--brand); background:var(--brand); color:var(--brand-ink)}
+.fsbtn.s1{font-size:15px} .fsbtn.s2{font-size:18px} .fsbtn.s3{font-size:21px}
 
 /* ===== 모달 ===== */
 .mask{position:fixed; inset:0; background:rgba(40,20,26,.5); z-index:50; display:none; align-items:flex-end}
@@ -229,6 +257,15 @@ textarea{min-height:92px; resize:vertical}
       <h2><img class="ic" src="assets/ic-pin.png" alt="" />오시는 길</h2>
       <p class="sub" id="hAddr">—</p>
       <div class="btns" id="hPlaceBtns"></div>
+    </div>
+    <div class="card">
+      <h2>글자 크기</h2>
+      <p class="sub">눈에 편한 크기로 골라 주세요. 다음에 열어도 그대로입니다.</p>
+      <div class="fsrow">
+        <button class="fsbtn s1" data-zoom="1">보통</button>
+        <button class="fsbtn s2" data-zoom="1.15">크게</button>
+        <button class="fsbtn s3" data-zoom="1.32">아주 크게</button>
+      </div>
     </div>
     <div class="card">
       <h2><img class="ic" src="assets/ic-online.png" alt="" />이 주보 보내기</h2>
@@ -780,6 +817,24 @@ textarea{min-height:92px; resize:vertical}
       window.scrollTo(0,0);
     };
   });
+
+  /* 글자 크기 — 어르신들이 많아 기본값을 '크게' 로 둡니다 */
+  (function(){
+    var saved=get('zoom')||'1.15';
+    function apply(z){
+      document.documentElement.style.setProperty('--zoom', z);
+      Array.prototype.forEach.call(document.querySelectorAll('[data-zoom]'), function(b){
+        b.classList.toggle('on', b.getAttribute('data-zoom')===z);
+      });
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('[data-zoom]'), function(b){
+      b.onclick=function(){
+        var z=b.getAttribute('data-zoom');
+        set('zoom', z); apply(z); toast('글자 크기를 바꿨습니다');
+      };
+    });
+    apply(saved);
+  })();
 
   $('#btnShare').onclick=function(){
     var txt=D.church.name+' 주보 · '+fmtDate(list[idx].date);
