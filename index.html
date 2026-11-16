@@ -471,6 +471,16 @@ window.__startApp = function(){
   function closeSheet(){ $('#mask').classList.remove('on'); }
   $('#mask').addEventListener('click', function(e){ if(e.target.id==='mask') closeSheet(); });
 
+  /* 사진은 소식 탭을 열 때 받아옵니다.
+     브라우저의 loading="lazy" 는 이 화면에서 동작하지 않아(사진이 끝내 안 뜸)
+     직접 켜 주는 방식으로 바꿨습니다. */
+  function loadPhotos(){
+    Array.prototype.forEach.call(document.querySelectorAll('#nPhotos img[data-src]'), function(el){
+      el.src=el.getAttribute('data-src');
+      el.removeAttribute('data-src');
+    });
+  }
+
   /* 사진 크게 보기 */
   var lbList=[], lbIdx=0;
   function drawLb(){
@@ -581,11 +591,12 @@ window.__startApp = function(){
     if(photos.length){
       $('#nPhotoCard').style.display='';
       $('#nPhotos').innerHTML=photos.map(function(p,i){
-        return '<img src="'+esc(p)+'" alt="교회 사진 '+(i+1)+'" loading="lazy" data-ph="'+i+'" />';
+        return '<img data-src="'+esc(p)+'" alt="교회 사진 '+(i+1)+'" data-ph="'+i+'" />';
       }).join('');
       Array.prototype.forEach.call(document.querySelectorAll('[data-ph]'), function(el){
         el.onclick=function(){ openLb(photos, +el.getAttribute('data-ph')); };
       });
+      if($('#sec-news').classList.contains('on')) loadPhotos();
     } else { $('#nPhotoCard').style.display='none'; }
 
     /* 섬김 */
@@ -894,6 +905,7 @@ window.__startApp = function(){
       Array.prototype.forEach.call(document.querySelectorAll('.sec'), function(s){ s.classList.remove('on'); });
       btn.classList.add('on');
       document.getElementById('sec-'+btn.getAttribute('data-sec')).classList.add('on');
+      if(btn.getAttribute('data-sec')==='news') loadPhotos();
       window.scrollTo(0,0);
     };
   });
