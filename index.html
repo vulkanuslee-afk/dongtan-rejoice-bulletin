@@ -164,6 +164,21 @@ textarea{min-height:92px; resize:vertical}
 .acct{border:1px solid var(--line); border-radius:14px; padding:13px; background:var(--soft2)}
 .acct .lb{font-size:13px; color:var(--muted)}
 .acct .no{font-size:18px; font-weight:800; margin:2px 0 6px; word-break:break-all; color:var(--brand)}
+/* ===== 교회 사진 ===== */
+.photos{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:4px}
+.photos img{width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:13px;
+  display:block; cursor:pointer; background:var(--soft2)}
+.photos img:active{transform:scale(.985)}
+.lb{position:fixed; inset:0; z-index:70; background:rgba(0,0,0,.94); display:none; flex-direction:column}
+.lb.on{display:flex}
+.lbtop{display:flex; justify-content:flex-end; padding:calc(10px + env(safe-area-inset-top)) 14px 6px}
+.lb img{flex:1 1 auto; width:100%; min-height:0; object-fit:contain}
+.lbbar{display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 14px calc(14px + env(safe-area-inset-bottom))}
+.lbbtn{background:rgba(255,255,255,.18); border:0; color:#fff; font-size:26px; font-weight:800;
+  width:68px; height:54px; border-radius:15px; line-height:1}
+.lbcount{color:#fff; font-size:16px; font-weight:700}
+
 .names{display:flex; flex-wrap:wrap; gap:7px; margin-top:4px}
 .name{background:var(--soft2); border:1px solid var(--line); border-radius:999px;
   padding:7px 14px; font-size:16px; font-weight:700}
@@ -310,6 +325,11 @@ textarea{min-height:92px; resize:vertical}
       <h2>공동체 소식</h2>
       <div id="nList"></div>
     </div>
+    <div class="card" id="nPhotoCard">
+      <h2>교회 사진</h2>
+      <p class="sub">사진을 누르면 크게 볼 수 있어요.</p>
+      <div class="photos" id="nPhotos"></div>
+    </div>
     <div class="card">
       <h2>이번 주 일정</h2>
       <div id="nCal"></div>
@@ -396,6 +416,16 @@ textarea{min-height:92px; resize:vertical}
   </div>
 </nav>
 
+<div class="lb" id="lb">
+  <div class="lbtop"><button class="lbbtn" id="lbClose" aria-label="닫기">&times;</button></div>
+  <img id="lbImg" alt="교회 사진" />
+  <div class="lbbar">
+    <button class="lbbtn" id="lbPrev" aria-label="이전 사진">&#8249;</button>
+    <span class="lbcount" id="lbCount"></span>
+    <button class="lbbtn" id="lbNext" aria-label="다음 사진">&#8250;</button>
+  </div>
+</div>
+
 <div class="mask" id="mask"><div class="sheet" id="sheet"></div></div>
 <div class="toast" id="toast"></div>
 
@@ -440,6 +470,22 @@ window.__startApp = function(){
   }
   function closeSheet(){ $('#mask').classList.remove('on'); }
   $('#mask').addEventListener('click', function(e){ if(e.target.id==='mask') closeSheet(); });
+
+  /* 사진 크게 보기 */
+  var lbList=[], lbIdx=0;
+  function drawLb(){
+    $('#lbImg').src=lbList[lbIdx];
+    $('#lbCount').textContent=(lbIdx+1)+' / '+lbList.length;
+    var many=lbList.length>1 ? '' : 'hidden';
+    $('#lbPrev').style.visibility=many;
+    $('#lbNext').style.visibility=many;
+  }
+  function openLb(list, i){ lbList=list; lbIdx=i; drawLb(); $('#lb').classList.add('on'); }
+  function closeLb(){ $('#lb').classList.remove('on'); $('#lbImg').removeAttribute('src'); }
+  $('#lbClose').onclick=closeLb;
+  $('#lbImg').onclick=closeLb;
+  $('#lbPrev').onclick=function(){ lbIdx=(lbIdx-1+lbList.length)%lbList.length; drawLb(); };
+  $('#lbNext').onclick=function(){ lbIdx=(lbIdx+1)%lbList.length; drawLb(); };
 
   var list=(D.list||[]).slice().sort(function(a,b){ return a.date<b.date?1:-1; });
   function currentIndex(){
@@ -530,6 +576,17 @@ window.__startApp = function(){
     $('#nCal').innerHTML=(b.calendar||[]).length?(b.calendar||[]).map(function(x){
       return '<div class="cal"><b>'+esc(x.when)+'</b><span>'+esc(x.what)+'</span></div>';
     }).join(''):'<p class="sub">등록된 일정이 없습니다.</p>';
+
+    var photos=b.photos||[];
+    if(photos.length){
+      $('#nPhotoCard').style.display='';
+      $('#nPhotos').innerHTML=photos.map(function(p,i){
+        return '<img src="'+esc(p)+'" alt="교회 사진 '+(i+1)+'" loading="lazy" data-ph="'+i+'" />';
+      }).join('');
+      Array.prototype.forEach.call(document.querySelectorAll('[data-ph]'), function(el){
+        el.onclick=function(){ openLb(photos, +el.getAttribute('data-ph')); };
+      });
+    } else { $('#nPhotoCard').style.display='none'; }
 
     /* 섬김 */
     $('#sAccts').innerHTML=(c.accounts||[]).map(function(a){

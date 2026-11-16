@@ -235,7 +235,7 @@ def parse(lines):
     cend = nstart if nstart else len(lines)   # 공동체 소식 제목 앞까지가 챌린지 영역
     for ln in lines[:cend]:
         s = ln.strip().lstrip('*※·• ').strip()
-        if s.rstrip().endswith('?') and len(s) > 20 and not question:
+        if s.rstrip().endswith('?') and len(s) > 12 and not question:
             question = s
         if re.search(r'(보십시오|해 보세요|적어|실천|나누어)', s) and len(s) > 18 \
            and not s.endswith('?') and not task:
@@ -249,6 +249,51 @@ def parse(lines):
     }
     out['memoPrompt'] = DEFAULT_MEMO
     return out
+
+
+def extract_photos(src, date):
+    """워드에 붙어 있는 사진을 photos/<날짜>/ 로 꺼내 저장합니다.
+    로고·말머리표 같은 작은 그림은 건너뜁니다. 큰 사진은 폭 1280 으로 줄입니다."""
+    import io as _io
+    import zipfile
+
+    exts = ('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tif', '.tiff', '.webp')
+    rel_dir = 'photos/' + date
+    out_dir = os.path.join(ROOT, 'photos', date)
+    saved = []
+
+    with zipfile.ZipFile(src) as z:
+        media = sorted(n for n in z.namelist()
+                       if n.startswith('word/media/') and n.lower().endswith(exts))
+        if not media:
+            return []
+        if not os.path.isdir(out_dir):
+            os.makedirs(out_dir)
+        n = 0
+        for m in media:
+            raw = z.read(m)
+            try:
+                from PIL import Image
+                im = Image.open(_io.BytesIO(raw))
+                if max(im.size) < 400:        # 로고·아이콘은 건너뜀
+                    continue
+                n += 1
+                name = '%02d.jpg' % n
+                im = im.convert('RGB')
+                im.thumbnail((1280, 1280))
+                im.save(os.path.join(out_dir, name), quality=82)
+            except ImportError:
+                n += 1
+                name = '%02d%s' % (n, os.path.splitext(m)[1].lower())
+                with open(os.path.join(out_dir, name), 'wb') as f:
+                    f.write(raw)
+            except Exception:
+                continue
+            saved.append(rel_dir + '/' + name)
+
+    if not saved and os.path.isdir(out_dir) and not os.listdir(out_dir):
+        os.rmdir(out_dir)
+    return saved
 
 
 def js(value, indent):
@@ -274,7 +319,7 @@ def js(value, indent):
 
 def block(data):
     keys = ['date', 'issue', 'label', 'theme', 'sermon', 'order',
-            'memoPrompt', 'challenge', 'notices', 'calendar', 'offeringNames']
+            'memoPrompt', 'challenge', 'notices', 'calendar', 'photos', 'offeringNames']
     lines = ['    {']
     for k in keys:
         lines.append('      %s: %s,' % (k, js(data[k], 6)))
@@ -290,6 +335,7 @@ def main():
     dry = '--dry' in sys.argv
 
     data = parse(docx_lines(src))
+    data['photos'] = extract_photos(src, data['date'])
     text = block(data)
 
     sys.stdout.reconfigure(encoding='utf-8')
@@ -300,6 +346,8 @@ def main():
     print('예배순서:', len(data['order']), '줄')
     print('소식   :', len(data['notices']), '건')
     print('일정   :', len(data['calendar']), '건')
+    print('사진   :', len(data['photos']), '장',
+          ('— photos/%s/ 에 저장' % data['date'] if data['photos'] else ''))
     print('헌금명단:', len(data['offeringNames']), '명',
           ('— 이름은 꼭 눈으로 확인해 주세요' if data['offeringNames'] else ''))
 
