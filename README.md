@@ -3,7 +3,7 @@
 ### 👉 https://vulkanuslee-afk.github.io/dongtan-rejoice-bulletin/
 
 종이 주보를 그대로 휴대폰으로 옮긴 **웹 주보**입니다.
-**2026년 11월 8일 45호** 주보 내용이 실제로 들어가 있습니다.
+**2026년 11월 15일 46호**(이번 주)와 **11월 8일 45호** 주보가 들어 있습니다.
 
 저장소: https://github.com/vulkanuslee-afk/dongtan-rejoice-bulletin
 
