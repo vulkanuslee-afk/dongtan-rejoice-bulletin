@@ -3,12 +3,16 @@
    - 앱 화면(index.html)과 주보 내용(data/)은 항상 새것을 먼저 받아옵니다.
    - 인터넷이 끊겼을 때만 저장해 둔 것을 보여 줍니다.
    - 로고·사진처럼 안 바뀌는 것만 저장본을 먼저 씁니다. */
-var SHELL = 'bulletin-shell-v3';
+var SHELL = 'bulletin-shell-v4';
 var SHELL_FILES = ['./', './index.html', './manifest.webmanifest',
   './assets/logo.png', './assets/hero.jpg', './assets/icon-192.png'];
 
 self.addEventListener('install', function (e) {
-  e.waitUntil(caches.open(SHELL).then(function (c) { return c.addAll(SHELL_FILES); }));
+  e.waitUntil(caches.open(SHELL).then(function (c) {
+    return c.addAll(SHELL_FILES.map(function (u) {
+      return new Request(u, { cache: 'reload' });
+    }));
+  }));
   self.skipWaiting();
 });
 
@@ -23,7 +27,14 @@ self.addEventListener('activate', function (e) {
 });
 
 function networkFirst(req) {
-  return fetch(req).then(function (res) {
+  /* 그냥 fetch 하면 브라우저가 들고 있던 옛 파일을 그대로 줍니다.
+     (주보를 올렸는데 교인 폰에 이전 화면이 뜨던 원인)
+     cache:'reload' 로 매번 서버까지 다녀오게 합니다. */
+  var fresh = req;
+  try { fresh = new Request(req.url, { cache: 'reload', credentials: 'same-origin' }); }
+  catch (e) { /* 지원 안 하면 원래 요청 그대로 */ }
+
+  return fetch(fresh).then(function (res) {
     if (res && res.ok) {
       var copy = res.clone();
       caches.open(SHELL).then(function (c) { c.put(req, copy); });
