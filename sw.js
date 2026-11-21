@@ -3,9 +3,9 @@
    - 앱 화면(index.html)과 주보 내용(data/)은 항상 새것을 먼저 받아옵니다.
    - 인터넷이 끊겼을 때만 저장해 둔 것을 보여 줍니다.
    - 로고·사진처럼 안 바뀌는 것만 저장본을 먼저 씁니다. */
-var SHELL = 'bulletin-shell-v4';
+var SHELL = 'bulletin-shell-v5';
 var SHELL_FILES = ['./', './index.html', './manifest.webmanifest',
-  './assets/logo.png', './assets/hero.jpg', './assets/icon-192.png'];
+  './assets/logo.png', './assets/hero.jpg?v=20261122', './assets/icon-192.png?v=3'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(SHELL).then(function (c) {
