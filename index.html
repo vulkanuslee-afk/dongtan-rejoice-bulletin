@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>동탄즐거운교회 주보</title>
 <meta name="description" content="주일 주보 · 예배순서 · 일상예배 챌린지 · 공동체 소식" />
-<meta name="theme-color" content="#732535" />
+<meta name="theme-color" content="#2f6b4c" />
 <meta name="robots" content="noindex, nofollow" />
 <meta property="og:title" content="동탄즐거운교회 주보" />
 <meta property="og:description" content="이번 주 예배순서와 일상예배 챌린지를 휴대폰에서 바로 보세요." />
@@ -15,25 +15,27 @@
 <link rel="icon" href="assets/icon-192.png" type="image/png" />
 <link rel="apple-touch-icon" href="assets/icon-192.png" />
 <style>
+/* 색: 베이지 바탕 + 교회 주보의 진한 초록. 어르신들이 보시기 편하도록
+   글자는 진하게, 바탕은 밝게 유지합니다. */
 :root{
-  --bg:#faf6ef; --card:#ffffff; --ink:#241a1d; --muted:#7c6e70; --line:#ebe2d6;
-  --brand:#7c2638; --brand2:#a54155; --brand-ink:#ffffff;
-  --gold:#bd8540; --soft:#fbeef0; --soft2:#f6f0e4;
-  --radius:18px; --shadow:0 1px 2px rgba(124,38,56,.05), 0 12px 30px rgba(124,38,56,.07);
+  --bg:#f8f3e6; --card:#ffffff; --ink:#1e2420; --muted:#6c7670; --line:#e6ded0;
+  --brand:#2f6b4c; --brand2:#3f855f; --brand-ink:#ffffff;
+  --gold:#a8742a; --soft:#eaf3ed; --soft2:#f4efe2;
+  --radius:18px; --shadow:0 1px 2px rgba(47,107,76,.06), 0 12px 30px rgba(47,107,76,.09);
   --maxw:560px;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#171113; --card:#211a1c; --ink:#f3ebec; --muted:#a4959a; --line:#34292c;
-    --brand:#e4a0b0; --brand2:#e4a0b0; --brand-ink:#1a1012;
-    --gold:#e0b571; --soft:#2b1f23; --soft2:#262022;
+    --bg:#121714; --card:#1b221e; --ink:#eef3ef; --muted:#9aa89f; --line:#2c3630;
+    --brand:#6cc394; --brand2:#6cc394; --brand-ink:#0d1611;
+    --gold:#dcb36a; --soft:#1f2a24; --soft2:#232520;
     --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#171113; --card:#211a1c; --ink:#f3ebec; --muted:#a4959a; --line:#34292c;
-  --brand:#e4a0b0; --brand2:#e4a0b0; --brand-ink:#1a1012;
-  --gold:#e0b571; --soft:#2b1f23; --soft2:#262022;
+  --bg:#121714; --card:#1b221e; --ink:#eef3ef; --muted:#9aa89f; --line:#2c3630;
+  --brand:#6cc394; --brand2:#6cc394; --brand-ink:#0d1611;
+  --gold:#dcb36a; --soft:#1f2a24; --soft2:#232520;
   --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
 }
 *{box-sizing:border-box}
@@ -49,10 +51,12 @@ button{font:inherit; color:inherit; cursor:pointer}
 img{max-width:100%}
 
 /* ===== 히어로 ===== */
+/* 사진을 바꿀 때는 뒤의 ?v= 숫자도 함께 올려야 교인 폰에 반영됩니다 */
 .hero{position:relative; overflow:hidden; border-radius:0 0 26px 26px;
-  background:#732535 url("assets/hero.jpg") center 35%/cover; color:#fff}
+  background:#2f6b4c url("assets/hero.jpg?v=20261122") center center/cover; color:#fff}
 .hero:before{content:""; position:absolute; inset:0;
-  background:linear-gradient(170deg, rgba(115,37,53,.72) 0%, rgba(115,37,53,.88) 55%, rgba(90,26,40,.95) 100%)}
+  background:linear-gradient(175deg, rgba(31,80,56,.48) 0%, rgba(28,74,52,.70) 45%, rgba(16,48,33,.94) 100%)}
+.hero .inner{text-shadow:0 1px 10px rgba(8,30,20,.55)}
 .hero .inner{position:relative; max-width:var(--maxw); margin:0 auto; padding:18px 16px 20px}
 .logochip{background:#fbf8f1; border-radius:14px; padding:8px 12px; display:inline-flex; align-items:center;
   box-shadow:0 6px 18px rgba(0,0,0,.18)}
@@ -201,19 +205,19 @@ textarea{min-height:92px; resize:vertical}
 .tb.on svg{stroke:var(--brand-ink)}
 
 /* 탭마다 또렷하게 다른 색 — 어르신들이 위치가 아니라 색으로도 찾게 */
-.tb[data-sec="home"]     {--c:#C62828; --cb:#FBE2E2}
-.tb[data-sec="order"]    {--c:#2E7D32; --cb:#E1F0E2}
+.tb[data-sec="home"]     {--c:#2F6B4C; --cb:#E2F0E8}
+.tb[data-sec="order"]    {--c:#1565C0; --cb:#E0EBF9}
 .tb[data-sec="challenge"]{--c:#EF6C00; --cb:#FDEAD8}
-.tb[data-sec="news"]     {--c:#1565C0; --cb:#E0EBF9}
-.tb[data-sec="serve"]    {--c:#7B1FA2; --cb:#F0E3F7}
-.tb[data-sec="vision"]   {--c:#00838F; --cb:#DBF0F2}
+.tb[data-sec="news"]     {--c:#00838F; --cb:#DBF0F2}
+.tb[data-sec="serve"]    {--c:#B5435F; --cb:#FAE3E9}
+.tb[data-sec="vision"]   {--c:#6A4FA3; --cb:#ECE5F7}
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .tb[data-sec="home"]     {--c:#FF8A8A; --cb:#3A1F22}
-  :root:not([data-theme="light"]) .tb[data-sec="order"]    {--c:#7BD68A; --cb:#1D2A20}
+  :root:not([data-theme="light"]) .tb[data-sec="home"]     {--c:#6CC394; --cb:#1B2A22}
+  :root:not([data-theme="light"]) .tb[data-sec="order"]    {--c:#7FB8F5; --cb:#1A2430}
   :root:not([data-theme="light"]) .tb[data-sec="challenge"]{--c:#FFB067; --cb:#2E2318}
-  :root:not([data-theme="light"]) .tb[data-sec="news"]     {--c:#7FB8F5; --cb:#1A2430}
-  :root:not([data-theme="light"]) .tb[data-sec="serve"]    {--c:#D3A0EE; --cb:#271C2E}
-  :root:not([data-theme="light"]) .tb[data-sec="vision"]   {--c:#5FD3DE; --cb:#15282B}
+  :root:not([data-theme="light"]) .tb[data-sec="news"]     {--c:#5FD3DE; --cb:#15282B}
+  :root:not([data-theme="light"]) .tb[data-sec="serve"]    {--c:#F09BB0; --cb:#2E1F24}
+  :root:not([data-theme="light"]) .tb[data-sec="vision"]   {--c:#BFA2E6; --cb:#251F2E}
 }
 
 /* ===== 글자 크기 ===== */
@@ -260,14 +264,14 @@ textarea{min-height:92px; resize:vertical}
   <!-- 주보 -->
   <section class="sec on" id="sec-home">
     <div class="card lead">
-      <h2><img class="ic" src="assets/ic-bible.png" alt="" />이번 주 말씀</h2>
+      <h2><img class="ic" src="assets/ic-bible.png?v=2" alt="" />이번 주 말씀</h2>
       <p class="bigtext" id="hSermonTitle">—</p>
       <div class="kv"><b>본문</b><span id="hSermonText">—</span></div>
       <div class="kv"><b>말씀 나눔</b><span id="hSermonBy">—</span></div>
       <div class="btns" id="hSermonBtns"></div>
     </div>
     <div class="card">
-      <h2><img class="ic" src="assets/ic-cross.png" alt="" />예배 안내</h2>
+      <h2><img class="ic" src="assets/ic-cross.png?v=2" alt="" />예배 안내</h2>
       <div id="hServices"></div>
     </div>
     <div class="card">
@@ -276,7 +280,7 @@ textarea{min-height:92px; resize:vertical}
       <div id="hGroups"></div>
     </div>
     <div class="card">
-      <h2><img class="ic" src="assets/ic-pin.png" alt="" />오시는 길</h2>
+      <h2><img class="ic" src="assets/ic-pin.png?v=2" alt="" />오시는 길</h2>
       <p class="sub" id="hAddr">—</p>
       <div class="btns" id="hPlaceBtns"></div>
     </div>
@@ -290,7 +294,7 @@ textarea{min-height:92px; resize:vertical}
       </div>
     </div>
     <div class="card">
-      <h2><img class="ic" src="assets/ic-online.png" alt="" />이 주보 보내기</h2>
+      <h2><img class="ic" src="assets/ic-online.png?v=2" alt="" />이 주보 보내기</h2>
       <p class="sub">링크 하나로 열립니다. 설치할 앱이 없습니다.</p>
       <div class="btns">
         <button class="btn pri" id="btnShare">주보 링크 보내기</button>
@@ -302,7 +306,7 @@ textarea{min-height:92px; resize:vertical}
   <!-- 순서 -->
   <section class="sec" id="sec-order">
     <div class="card">
-      <h2><img class="ic" src="assets/ic-cross.png" alt="" />예배 순서</h2>
+      <h2><img class="ic" src="assets/ic-cross.png?v=2" alt="" />예배 순서</h2>
       <ul class="order" id="orderList"></ul>
     </div>
     <div class="card">
@@ -335,7 +339,7 @@ textarea{min-height:92px; resize:vertical}
       <div id="nCal"></div>
     </div>
     <div class="card">
-      <h2><img class="ic" src="assets/ic-heart.png" alt="" />나눔 · 기도 제목</h2>
+      <h2><img class="ic" src="assets/ic-heart.png?v=2" alt="" />나눔 · 기도 제목</h2>
       <p class="sub">목사님께 바로 보냅니다. 적은 내용은 보내기 전까지 이 휴대폰에만 있습니다.</p>
       <input type="text" id="fbName" placeholder="이름 (선택)" />
       <textarea id="fbText" placeholder="기도 제목, 나눔, 예배 소감 무엇이든 좋습니다" style="margin-top:8px"></textarea>
@@ -348,7 +352,7 @@ textarea{min-height:92px; resize:vertical}
   <!-- 섬김 -->
   <section class="sec" id="sec-serve">
     <div class="card">
-      <h2><img class="ic" src="assets/ic-heart.png" alt="" />헌금 안내</h2>
+      <h2><img class="ic" src="assets/ic-heart.png?v=2" alt="" />헌금 안내</h2>
       <p class="sub">계좌번호를 누르면 복사됩니다.</p>
       <div id="sAccts"></div>
       <p class="warn" id="sAcctNote"></p>
@@ -371,7 +375,7 @@ textarea{min-height:92px; resize:vertical}
       <div id="sMiss"></div>
     </div>
     <div class="card">
-      <h2><img class="ic" src="assets/ic-call.png" alt="" />교회 연락처</h2>
+      <h2><img class="ic" src="assets/ic-call.png?v=2" alt="" />교회 연락처</h2>
       <div class="btns" id="sContact"></div>
     </div>
   </section>
@@ -691,7 +695,7 @@ window.__startApp = function(){
         '<div class="btns"><button class="btn" id="chCopy">말씀 복사</button></div>'+
       '</div>'+
       '<div class="card">'+
-        '<h2><img class="ic" src="assets/ic-bible.png" alt="" />챌린지 하는 법</h2>'+
+        '<h2><img class="ic" src="assets/ic-bible.png?v=2" alt="" />챌린지 하는 법</h2>'+
         '<ul class="steps">'+(ch.steps||[]).map(function(s){
           return '<li><span class="n">'+esc(s.k)+'</span><span class="t">'+esc(s.v)+
                  (s.sample?'<span class="s">'+esc(s.sample)+'</span>':'')+'</span></li>';
