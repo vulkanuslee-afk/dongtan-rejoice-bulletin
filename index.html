@@ -293,7 +293,7 @@ textarea{min-height:92px; resize:vertical}
       <h2><img class="ic" src="assets/ic-online.png" alt="" />이 주보 보내기</h2>
       <p class="sub">링크 하나로 열립니다. 설치할 앱이 없습니다.</p>
       <div class="btns">
-        <button class="btn pri" id="btnShare">카톡·문자로 공유</button>
+        <button class="btn pri" id="btnShare">주보 링크 보내기</button>
         <button class="btn" id="btnInstall">홈 화면에 추가</button>
       </div>
     </div>
@@ -341,7 +341,6 @@ textarea{min-height:92px; resize:vertical}
       <textarea id="fbText" placeholder="기도 제목, 나눔, 예배 소감 무엇이든 좋습니다" style="margin-top:8px"></textarea>
       <div class="btns">
         <button class="btn pri full" id="fbSend">문자로 보내기</button>
-        <button class="btn full" id="fbCopy">복사해서 카톡으로 보내기</button>
       </div>
     </div>
   </section>
@@ -457,6 +456,14 @@ window.__startApp = function(){
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(text).then(done, fallback);
     } else { fallback(); }
+  }
+  /* 문자 보내기 — 교회 대표번호로.
+     'sms:번호?&body=' 형식이 아이폰·안드로이드 양쪽에서 다 열립니다. */
+  function sendSms(text){
+    var tel=digits(D.church.tel);
+    if(!tel){ copy(text, '복사했습니다'); return; }
+    try { location.href='sms:'+tel+'?&body='+encodeURIComponent(text); }
+    catch(e){ copy(text, '복사했습니다'); }
   }
   function fmtDate(d){
     var p=d.split('-'), y=+p[0], m=+p[1], dd=+p[2];
@@ -665,13 +672,7 @@ window.__startApp = function(){
     }
     $('#fbSend').onclick=function(){
       var t=body(); if(!t) return;
-      var tel=digits(D.church.tel);
-      if(!tel){ copy(t,'복사했습니다'); return; }
-      location.href='sms:'+tel+'?&body='+encodeURIComponent(t);
-    };
-    $('#fbCopy').onclick=function(){
-      var t=body(); if(!t) return;
-      copy(t,'복사했습니다. 카톡에 붙여 넣어 주세요');
+      sendSms(t);
     };
   }
 
@@ -759,8 +760,7 @@ window.__startApp = function(){
       '<p class="sub">'+esc(p.desc||'')+(p.deadline&&!p.demo?' · <b>'+esc(p.deadline)+'</b>':'')+'</p>'+
       '<input type="text" id="pickName" placeholder="이름" />'+
       '<div id="optList" style="margin-top:10px"></div><div class="mine" id="mineBox"></div>'+
-      '<div class="btns"><button class="btn pri full" id="pickSend">문자로 보내기</button>'+
-      '<button class="btn full" id="copyPick">복사해서 카톡으로 보내기</button></div>'+
+      '<div class="btns"><button class="btn pri full" id="pickSend">문자로 보내기</button></div>'+
       '<p class="warn">선택은 <b>이 휴대폰에만</b> 저장됩니다. 전체 인원을 자동으로 모으려면 구글 스프레드시트 연결이 필요합니다(README 참고).</p></div>';
     var pn=$('#pickName'); pn.value=get('fb:name')||'';
     pn.oninput=function(){ set('fb:name', pn.value); };
@@ -783,13 +783,7 @@ window.__startApp = function(){
       });
       $('#pickSend').onclick=function(){
         var t=msg(); if(!t) return;
-        var tel=digits(D.church.tel);
-        if(!tel){ copy(t); return; }
-        location.href='sms:'+tel+'?&body='+encodeURIComponent(t);
-      };
-      $('#copyPick').onclick=function(){
-        var t=msg(); if(!t) return;
-        copy(t,'복사했습니다. 카톡에 붙여 넣어 주세요');
+        sendSms(t);
       };
     }
     draw();
