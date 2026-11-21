@@ -115,7 +115,6 @@ window.BULLETINS = {
         { part: "사도신경",   by: "다 같 이" },
         { part: "공동기도문", by: "다 같 이" },
         { part: "말씀 나눔",  by: "김경환 목사", bible: "빌립보서 4:4-9", note: "감사는 공동체를 강하게 한다" },
-        { part: "성찬식",     by: "다 같 이" },
         { part: "응답찬양",   by: "다 같 이", note: "감사",
           scores: [ { title: "감사", src: "scores/2026-11-22/03.jpg" } ] },
         { part: "축복기도",   by: "김경환 목사" },
